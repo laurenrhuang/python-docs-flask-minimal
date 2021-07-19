@@ -1,6 +1,17 @@
 from flask import Flask
-myapp = Flask(__name__)
+from flask import json, request, jsonify
 
-@myapp.route("/")
-def hello():
-    return "Hello Flask, on Azure App Service for Linux"
+myapp = Flask(__name__)
+app.config["DEBUG"] = True
+
+
+@myapp.route("/api/upperCaseService/")
+def upperCaseService():
+    words_dict = dict(request.get_json())
+    new_words_dict = {}
+    for key, value in words_dict.items():
+        new_words_dict[key] = [name.capitalize() for name in value]
+    return jsonify(new_words_dict)
+
+
+myapp.run()
